@@ -1,8 +1,8 @@
 .vscode
-.exe
+*.exe
 
 # build directories
-.DS_STORE
+*.DS_STORE
 .idea/
 config.log
 target/
