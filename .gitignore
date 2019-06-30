@@ -1,0 +1,9 @@
+.vscode
+.exe
+
+# build directories
+.DS_STORE
+.idea/
+config.log
+target/
+_build/
