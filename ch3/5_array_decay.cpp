@@ -50,6 +50,6 @@ int main() {
     // This pointer also points to the first element of the array, but the type information is different 
     // (in the above example, int(*)[5]).
 
-    // https://stackoverflow.com/a/4223652
+    // https://www.learncpp.com/cpp-tutorial/6-8-pointers-and-arrays/
     return 0;
 }
