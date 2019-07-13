@@ -140,7 +140,7 @@ class Account {
 
     private: 
     Money bal = 0.0;
-} 
+}
 ```  
 Explanation:   
 1. `Money balance()` is the member function declaration, and the general name lookup rule is applied. `{ return bal; }` is the member function definition, so the two-phase processing rule is applied.  
