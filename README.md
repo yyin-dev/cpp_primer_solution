@@ -327,7 +327,85 @@ Keep in mind the meaning of constant expression: its value can be evaluated at c
     int j = get_n(i);  // ok, as constant expression is not expected
     int arr[get_n(i)]; // error, as constant expression is expected
     ```
-4. A `constexpr` function does not have to return `const` object. 
+4. A `constexpr` function does not have to return `const` object.   
+
+
+## Sequential Containers  
+Sequential containers, **6** in total:  `vector`, `string`, `deque`, `list`, `forward_list`, `array`.  
+Note:  
+`string` can be considered a specialized version of `vector` that can only store `char`. All operations appliable to `vector` is appliable to `string`.  
+
+#### Characteristics  
+`vector`: Fast random access. Fast insertion/deletion at back.  
+`string`: Can be regarded as a specialized `vector`. Fast random access. Fast insertion/deletion at back.  
+`deque`: `d`ouble-`e`nded `que`ue. Fast random access. Fast insertion/deletion at front&back. More detail: https://stackoverflow.com/a/24483402/9057530  
+`list`: doubly linked list. Supports bi-directional sequential access but no random access. Fast insertiion/deletion at all placess.  
+`forward_list`: singly linked list. Supports only uni-directional sequential access. Fast insertiion/deletion at all placess.   
+`array`: fixed-size array. Fast random access. Cannot add or remove element.  
+
+#### Constraints on element type  
+No constraints, with one exception: some operation on containers rely on performing certain operations on the element type.  
+Two examples. **(1)** `==` and `!=` operations are defined for containers. However, this operation relies on apply `==` and `!=` among elements. This requires operator overloading for user_defined class. **(2)** Containers provide a constructor for initialization that only take one argument, which is the size of the container. In the initialization, the default constructor for the element type would be called. If the class, e.g. a user-defined class, does not have a default-constructor, then error occurs.  
+
+#### Iterator operations for containers  
+1. With one exception, sequential containers iterators support the following operations:
+
+    `*`(dereference), `->`(dereference and dot), `++`, `--`, `==`, `!=`  
+
+    Exception: `forward_list` does not support `--`, as it only supports one-directional sequential access.  
+
+2. Iterator arithmetics only apply to `vector`, `string`, `deque` and `array`:  
+    `iter + n`, `iter - n`, `iter += n`, `iter -= n`, `iter1 - iter2`, `>`, `<`, `>=`, `<=`  
+    Reason: Unlike the four types, elements in `list` and `forward_list` are not allocated contigous memory address, thus does not support iterator arithmetics.  
+
+#### Iterator range  
+Iterator range is a **left-inclusive interval**, i.e., `[begin, end)`.  
+
+#### Container definition and initialization  
+1. With the exception of `array`, each container defines a default construtor. The default constructor creats an empty container(size 0) of the specified type.   
+    Example: `vector<int> v;`  
+    PS: For an `array` object, its type info includes: `container type(array)` + `element type` + `size`. For other 5 kinds of container, type infor includes: `container type` + `element type`. The size for an `array` is always specified at initialization for `array`: `array<int, 5> array;`.  
+
+2. With the exception of `array`, another constructor is defined that takes the size of the container and initial value for the elements.   
+    Example: `vector<int> v(5, -1); `.
+
+    We can also use the constructor that takes only a size argument, **IF** the element type is a built-in type or a class type with a default constructor.   
+    Example: `vector<int> v(5); `.
+
+3. Initialization as a copy of another container  
+    - Approach 1: pass another container as argument.   
+        Requirement: the argument must have **the same** type info: `container type` + `element type`.  
+        ```C++
+        list<string> original_list = {"Hi", "Hello"};
+        list<string> new_list(original_list);      // ok, match  
+        vector<string> new_vector(original_list);  // error, container type 
+        list<char *> new_list2(original_list);     // error, element type
+        ```  
+    - Approach 2: pass a pair of iterators of another container  
+        Requirement: container type can be different, element type can differ as long as conversion is possible.  
+        ```C++
+        list<char *> old = {"Hi", "Hello"};
+        list<char *> new_list1(old.begin(), old.end());     // ok
+        list<string> new_list2(old.begin(), old.end());     // ok
+        vector<char *> new_vector1(old.begin(), old.end()); // ok
+        vector<string> new_vector2(old.begin(), old.end()); // ok  
+        ```  
+
+4. `array` have fixed size  
+    The size of an `array` is part of its type info.  
+    ```C++
+    array<int, 10> = i_arr;
+    array<int, 10>::size_type sz;
+    ```  
+    You can copy and assign library `array`, though you cannot do so with built-in array.
+
+5. Assignment with `=` and `assign()`  
+
+#### iterators involved in `erase()` and `insert()`  
+
+
+
+
 
 
 
