@@ -404,6 +404,75 @@ Iterator range is a **left-inclusive interval**, i.e., `[begin, end)`.
 #### iterators involved in `erase()` and `insert()`  
 
 
+## Generic Algorithms  
+Generic algorithms are defined in the `<algorithm>` header.   
+Library algorithms do not execute container operations. They operate solely with iterators and iterator operations.   
+
+*Implication 1*: algorithms do not change the size of the container.  
+*Implication 2*: algorithms are container-independent, but do depend on element type.    
+*Implication 3*: algorithms can work on built-in array as they provide iterators.  
+
+PS: When algorithms operate on some iterator types, e.g. `back_inserter`, that can change the size of the underlying container, keep in mind that this is the effect by the iterator, not algorithm.     
+
+Algorithms that take 1 input range use the first 2 parameters to denote the range.
+
+Algorithms can be divided into 3 categories by whether they:   
+(1) read element,   
+(2) write element, or   
+(3) rearrange the order of the elements.   
+
+#### 1.1 Read-only algorithm   
+Can use `const` iterator to denote the range.  
+Example: `find`, `count`, `accumulate`.  
+```C++
+int sum = accumulate(vec.cbegin(), vec.cend(), 0);          // ok
+string sum = accumulate(v.cbegin(), v.cend(), "");          // error 
+string sum = accumulate(v.cbegin(), v.cend(), string(""));  // ok
+```
+`accumulate` uses the 3rd argument as the staring point for summation. Thus, make sure that we can add element type to it.  
+
+
+#### 1.2 Writing algorithm  
+Cannot use `const` iterator to denote the range.   
+Algorithms that take 2 input ranges use the first 2 parameters to denote the 1st range, and the 3rd parameter to denote the first element in the 2nd range. In this case, the algorithm **assumes that:** second range is at least as long as the 1st one.    
+
+Some algorithms take an input range and writes to it. These algorithms are not too dangerous as long as you provide valid input range;  
+Some algorithms takes a single iterator, denoting the destination, and a number denoting the number of elements to be written to. For example, `fill_n(dest, n, val)`. It **assumes that** the `dest` refers to an element, and there are at least `n` elements in the range starting from `dest`.  
+```C++
+vector<int> vec;
+fill_n(vec.begin(), vec.size(), -1); // ok
+fill_n(vec.begin(), 10, -1);         // error, vec is empty  
+```  
+
+Takes a look at `back_inserter`.   
+
+#### 1.3 Reordering algorithm   
+Cannot use `const` iterator to denote the range.  
+
+Consider eliminating duplicates in a container. Steps: use `sort` algorithm to group duplicates together -> use `uniq` algorithm to get a range with unique elements -> use *container operation*  `erase` to remove elements outside the unique range.  
+
+
+
+#### 2. Provide `predicate` to algorithms  
+Two kinds of predicates: **unary predicates** and **binary predicates**.  
+
+#### 3 Lambda expression and `bind`  
+Lambda expression provides a wrapping for functions to make it takes the required number of arguments.  
+
+- Lambda expression  
+    - Syntax: `[capture list] (parameter list) -> return type { function body }`. 
+        - Capture list specifies the local variables of the enclosing scope the lambda will use.
+        - You can omit both or either of parameter list and return type.  
+        Omitting the parentheses and the parameter list is equivalent to specifying an empty parameter list.    
+        If return type is omitted, a return type is inferred from the function body: if the function has only one `return` statement, the return type is inferred from the returned expression; otherwise the return type is `void`.  
+        - Lambda can use local statics and variables *outside the enclosing scope* directly, without including them in the capture list.  
+    - Capture by value/reference + Implicit/Explicit capture  
+    - Mutable lambda  
+- `bind`  
+
+
+
+
 
 
 
