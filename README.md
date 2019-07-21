@@ -471,6 +471,21 @@ Lambda expression provides a wrapping for functions to make it takes the require
 - `bind`  
 
 
+## Forward Declaration 
+The *forward declration* `class StrBlob;` introduces the name `StrBlob` into the program and indicates that it's a class type. **After the declaration and before a definition is seen, the class is a incomplete type:** it is know that `StrBlob` is a class type but what members the type contains is unknown.  
+
+We can use a incomplete type only in limited ways: 
+1. we can define pointers or references to such type. 
+2. We can declare, but not define, functions using the incomplete type as return or parameter type. 
+
+A class must be defined before: 
+1. we can create object of that type, otherwise the compiler does not know how much memory to allocate for the object. 
+2. we can access the members of the class.
+3. Being used as the member of another class. 
+
+
+
+
 
 
 
