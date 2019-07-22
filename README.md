@@ -484,6 +484,16 @@ A class must be defined before:
 3. Being used as the member of another class. 
 
 
+## `std::move`, move constructor, and move assignment operator  
+https://stackoverflow.com/questions/3413470/what-is-stdmove-and-when-should-it-be-used
+
+https://docs.microsoft.com/en-us/cpp/cpp/move-constructors-and-move-assignment-operators-cpp?view=vs-2019 The output of the program is pretty intersting.  
+
+#### How move constructor and move assignment improves performance?   
+- From the pespective of implementation: when a move constructor is called, a new object is created, whose data is **moved** from another object, instead of copied. Similarily for a move assignment operator.  
+
+- From the perspective of invoking the move constructor and move assignment operator: if the move constructor and move assignment operator are not defined, the compiler makes copies whenever it needs to do a *copy initialization*. However, with the two move copy-controls defined, when a rvalue reference is encountered, the move operation would be performed instead of copy. 
+
 
 
 

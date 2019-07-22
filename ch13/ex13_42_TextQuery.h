@@ -4,10 +4,10 @@
 #include "headers.h"
 
 class QueryResult;
-class StrBlob;
+class StrVec;
 
 class TextQuery {
-    using lineNum = StrBlob::size_type;
+    using lineNum = size_t;
 
    public:
     // The initialization list here is important.
@@ -17,7 +17,7 @@ class TextQuery {
     // program terminates without warning or error.)
     // You need to initialize the shared_ptr, with
     // a pointer returned by new or another shared_ptr.
-    TextQuery(const string& file = "./ex12_27_input.txt") : lines(new StrBlob()) {
+    TextQuery(const string& file = "./ex13_42_input.txt") : lines(new StrVec()) {
         ifstream ifs(file);
         string line;
         while (getline(ifs, line)) {
@@ -41,7 +41,7 @@ class TextQuery {
     QueryResult query(const string& keyword) const;
 
    private:
-    shared_ptr<StrBlob> lines;
+    shared_ptr<StrVec> lines;
     map<string, shared_ptr<set<lineNum>>> word2lineNums;
 };
 
