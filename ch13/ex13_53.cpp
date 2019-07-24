@@ -68,6 +68,7 @@ HasPtr &HasPtr::operator=(HasPtr &&rhs) {
 
         ps = rhs.ps;
         i = rhs.i;
+        
         rhs.ps = nullptr;
     }
     return *this;
