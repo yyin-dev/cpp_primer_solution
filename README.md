@@ -494,9 +494,70 @@ https://docs.microsoft.com/en-us/cpp/cpp/move-constructors-and-move-assignment-o
 
 - From the perspective of invoking the move constructor and move assignment operator: if the move constructor and move assignment operator are not defined, the compiler makes copies whenever it needs to do a *copy initialization*. However, with the two move copy-controls defined, when a rvalue reference is encountered, the move operation would be performed instead of copy. 
 
+## Overriding overloaded functions  
+https://stackoverflow.com/questions/1628768/why-does-an-overridden-function-in-the-derived-class-hide-other-overloads-of-the    
+https://stackoverflow.com/questions/411103/function-with-same-name-but-different-signature-in-derived-class
 
 
 
+### Programs tend to use dynamic memory for one of three purposes:
+1. They don’t know how many objects they’ll need
+2. They don’t know the precise type of the objects they need
+3. They want to share data between several objects  
+
+<br /><br /> 
+
+# C++ Program Building Process  
+*The following content is studied and summarized when working on last several pages of Chpater 15: OOP. At this stage, many classes are involved and I decide to seperate fils into source code file and header file. This section serves as a review for C++ building and compilation.*  
+
+
+The building process refers to converting C++ source code (*.cpp, .h*) into executables. For clarity,
+we use the name 'building' instead of 'compilation', as compilation is one of the four stages of 
+the entire building process.
+
+### 1. Preprocessing 
+Reference to preprocessing directives: http://www.cplusplus.com/doc/tutorial/preprocessor/
+
+At this stage, the preprocessor handles the preprocessor directives, like `#include` and `#define`. 
+
+Replacing `#include` directives with the content of the corresponding files, doing replacement 
+of macros (`#define` and `#undef`), and selecting different portions of text depending of `#if`, `#ifdef` and `#ifndef` directives. Each source file, i.e. files with suffix `.cpp` would generate a preprocessed file.
+
+The output file is called *translation unit*, which is also sometimes referred to as *expanded source file* or *pure C++ source code*.
+
+    Source file(.cpp) -> translation unit
+
+### 2. Compiling  
+The compilation step is performed on each output of the preprocessor. The compiler parses the pure C++ source code ( without any preprocessor directives) and converts it into **assembly code**. 
+
+
+Assembly code is human-raedable low-level code. It is still human readable, but with much less abstraction compared with programming languages, which are called high-level languages. 
+
+    Source file(.cpp) -> translation unit -> assembly code
+
+### 3. Assembling 
+The assembler assembles that each assmebly code file into an object file, which contains machine code, i.e. binary code containing 1's and 0's, that only the machine can understand. Each object file contains the compiled code of the symbols(classes, functions, etc) defined in the input.
+
+Object files can refer to symbols that are not defined. This is the case when you use a declaration, and don't provide a definition for it. The compiler doesn't mind this, and will happily produce the object file.
+
+During assembling, if the assembler could not find the definition for a particular function, it would just assume that the function was defined in another file. **It doesn't look at the contents of more than one file at a time.** This also explains why you just need to include the header file.
+
+This compiling approach of compiling one object file at a time  is very useful, because with it you can compile each source code file separately. The advantage this provides is that you don't need to recompile everything if you only change a single file.
+
+It's at this stage that "regular" compiler errors, like syntax errors or failed overload resolution errors, are reported.  
+
+### 4. Linking 
+The linker produces the final compilation output from the object files the compiler produced. This output can be either a library or an executable.
+
+It links all the object files by replacing the references to undefined symbols with the correct addresses. Each of these symbols can be defined in other object files or in libraries. 
+Different from assembler, the linker, may look at multiple files and try to find references for the functions that weren't mentioned in the current file.
+
+At this stage the most common errors are missing definitions or duplicate definitions. If the linking succeeds, an executable would be produced.   
+
+References:  
+http://faculty.cs.niu.edu/~mcmahon/CS241/Notes/compile.html  
+https://stackoverflow.com/questions/6264249/how-does-the-compilation-linking-process-work    
+https://stackoverflow.com/questions/466790/assembly-code-vs-machine-code-vs-object-code
 
 
 
