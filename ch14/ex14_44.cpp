@@ -27,4 +27,11 @@ int main() {
     cout << function_table["*"](10, 2) << endl;
     cout << function_table["/"](10, 2) << endl;
     cout << function_table["%"](10, 2) << endl;
+
+    map<string, function<int(int, int)>> function_table{
+        {"+", add},
+        {"-", subtract},
+        {"*", multiply()},
+        {"/", [](const int& a, const int& b) -> int { return a / b; }},
+        {"%", modulus<int>()}};
 }

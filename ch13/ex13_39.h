@@ -7,8 +7,11 @@ class StrVec {
    public:
     StrVec() : elements(nullptr), first_free(nullptr), cap(nullptr) {}
     StrVec(const StrVec &);
+
     StrVec &operator=(const StrVec &sv);
+
     ~StrVec();
+    
     size_t size() const;
     size_t capacity() const;
     string *begin() const;
@@ -21,7 +24,7 @@ class StrVec {
    private:
     allocator<string> alloc; 
     // By design this should be made static, but 
-    // the compiler generats error when did so. So we \
+    // the compiler generats error when did so. So we
     // keep it as non-static.
 
     pair<string *, string *> allocate_n_copy(const string *b, const string *e);
@@ -29,6 +32,7 @@ class StrVec {
     void possible_reallocate();
     void reallocate();
     void reallocate_by_capacity(const int new_capacity);
+
     string *elements;
     string *first_free;
     string *cap;
